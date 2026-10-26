@@ -1,0 +1,18 @@
+# Calculate total cost with discount and tax
+
+prices = [100, 50, 80]
+quantities = [2, 3, 1]
+discount_rate = 10
+tax_rate = 5
+
+subtotal = sum(p * q for p, q in zip(prices, quantities))
+discount = subtotal * discount_rate / 100
+amount = subtotal - discount
+tax = amount * tax_rate / 100
+total = amount + tax
+
+print("Subtotal:", subtotal)
+print("Discount:", discount)
+print("Amount after discount:", amount)
+print("Tax:", tax)
+print("Total Cost:", total)

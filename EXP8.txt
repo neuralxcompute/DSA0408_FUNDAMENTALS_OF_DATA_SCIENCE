@@ -1,0 +1,20 @@
+import pandas as pd
+
+sales_data = pd.DataFrame({
+    "product_name": ["Pen", "Notebook", "Pen", "Pencil", "Notebook",
+                     "Marker", "Pen", "Pencil", "Eraser", "Marker"],
+    "quantity_sold": [10, 5, 8, 7, 6, 4, 12, 3, 9, 5],
+    "sale_date": ["2026-10-01", "2026-10-02", "2026-10-05", "2026-10-07",
+                  "2026-10-10", "2026-10-12", "2026-10-15", "2026-10-18",
+                  "2026-10-20", "2026-10-22"]
+})
+
+sales_data["sale_date"] = pd.to_datetime(sales_data["sale_date"])
+one_month_ago = sales_data["sale_date"].max() - pd.DateOffset(months=1)
+past_month = sales_data[sales_data["sale_date"] > one_month_ago]
+
+top_5 = (past_month.groupby("product_name")["quantity_sold"]
+         .sum().sort_values(ascending=False).head(5))
+
+print("Top 5 Best-Selling Products:")
+print(top_5)
