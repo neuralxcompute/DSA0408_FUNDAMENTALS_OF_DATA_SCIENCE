@@ -1,0 +1,36 @@
+# Experiment 36: Stock Price Variability Analysis from CSV
+import os
+import pandas as pd
+import numpy as np
+
+filename = "stock_data.csv"
+
+# Create sample stock_data.csv if it does not exist
+if not os.path.exists(filename):
+    sample_stock = pd.DataFrame({
+        'Date': pd.date_range(start='2026-01-01', periods=15, freq='B'),
+        'Close': [150.2, 152.5, 149.8, 153.0, 156.4, 155.1, 158.0, 160.2,
+                  157.5, 162.1, 165.0, 163.4, 167.8, 166.2, 170.5]
+    })
+    sample_stock.to_csv(filename, index=False)
+
+# Read stock data
+df = pd.read_csv(filename)
+prices = df['Close']
+
+# Variability calculations
+mean_price = prices.mean()
+std_dev = prices.std()
+variance = prices.var()
+price_range = prices.max() - prices.min()
+cv = (std_dev / mean_price) * 100
+daily_returns = prices.pct_change().dropna()
+
+print("Stock Price Variability Analysis:")
+print(f"Mean Closing Price:      ${mean_price:.2f}")
+print(f"Standard Deviation:      ${std_dev:.2f}")
+print(f"Variance:                {variance:.2f}")
+print(f"Price Range (Max - Min): ${price_range:.2f}")
+print(f"Coefficient of Variation:{cv:.2f}%")
+print(f"Average Daily Return:    {daily_returns.mean() * 100:.2f}%")
+print(f"Daily Return Volatility: {daily_returns.std() * 100:.2f}%")

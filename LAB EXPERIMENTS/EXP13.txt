@@ -1,0 +1,31 @@
+# Experiment 13: Word Frequency Distribution from a Text Document
+import os
+import string
+from collections import Counter
+
+filename = "sample_text.txt"
+
+# Create a sample text file if it does not already exist
+if not os.path.exists(filename):
+    sample_paragraph = (
+        "Data science is an interdisciplinary field that uses scientific methods, "
+        "processes, algorithms, and systems to extract knowledge and insights from data. "
+        "Data science combines statistics, programming, and domain knowledge."
+    )
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(sample_paragraph)
+
+# Read and process the text document
+with open(filename, "r", encoding="utf-8") as file:
+    text = file.read().lower()
+
+# Remove punctuation
+text = text.translate(str.maketrans("", "", string.punctuation))
+
+# Split into words and compute frequency distribution
+words = text.split()
+word_freq = Counter(words)
+
+print("Word Frequency Distribution:")
+for word, count in word_freq.most_common():
+    print(f"{word}: {count}")

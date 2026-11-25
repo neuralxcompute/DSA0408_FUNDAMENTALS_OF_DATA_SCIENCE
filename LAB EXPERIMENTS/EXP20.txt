@@ -1,0 +1,23 @@
+# Experiment 20: A/B Testing for Website Conversion Rates
+import numpy as np
+from scipy import stats
+
+np.random.seed(42)
+
+# Sample conversion rate data for Design A and Design B
+design_a = np.random.normal(loc=0.12, scale=0.02, size=100)
+design_b = np.random.normal(loc=0.145, scale=0.02, size=100)
+
+# Perform independent two-sample t-test
+t_stat, p_value = stats.ttest_ind(design_a, design_b)
+
+print(f"Mean Conversion Rate (Design A): {np.mean(design_a):.4f}")
+print(f"Mean Conversion Rate (Design B): {np.mean(design_b):.4f}")
+print(f"T-statistic: {t_stat:.4f}")
+print(f"P-value: {p_value:.6f}")
+
+alpha = 0.05
+if p_value < alpha:
+    print("Result: Statistically significant difference between Design A and Design B (Reject H0).")
+else:
+    print("Result: No statistically significant difference between Design A and Design B (Fail to reject H0).")

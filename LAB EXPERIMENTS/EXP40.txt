@@ -1,0 +1,48 @@
+# Experiment 40: Soccer Players Analytics (CSV, Top 5 Goals/Salaries, Age, Bar Chart)
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Create soccer players dataset and save to CSV
+players_data = pd.DataFrame({
+    'Name': ['Alex', 'Bruno', 'Carlos', 'David', 'Ethan', 'Felix', 'Gabriel', 'Hugo', 'Ivan', 'Jack'],
+    'Age': [24, 29, 22, 31, 27, 25, 33, 21, 28, 30],
+    'Position': ['Forward', 'Midfielder', 'Forward', 'Defender', 'Midfielder',
+                 'Forward', 'Goalkeeper', 'Defender', 'Midfielder', 'Forward'],
+    'Goals': [28, 12, 22, 4, 15, 19, 0, 3, 10, 25],
+    'Weekly_Salary': [180000, 150000, 130000, 110000, 140000, 125000, 95000, 85000, 135000, 175000]
+})
+
+csv_file = "soccer_players.csv"
+players_data.to_csv(csv_file, index=False)
+
+# Read CSV into Pandas DataFrame
+df = pd.read_csv(csv_file)
+
+# 1. Top 5 players with highest number of goals scored
+top_5_goals = df.nlargest(5, 'Goals')[['Name', 'Goals']]
+print("Top 5 Players by Goals Scored:")
+print(top_5_goals.to_string(index=False))
+
+# 2. Top 5 players with highest weekly salaries
+top_5_salaries = df.nlargest(5, 'Weekly_Salary')[['Name', 'Weekly_Salary']]
+print("
+Top 5 Players by Weekly Salary:")
+print(top_5_salaries.to_string(index=False))
+
+# 3. Average age and players above average age
+avg_age = df['Age'].mean()
+above_avg_players = df[df['Age'] > avg_age]['Name'].tolist()
+print(f"
+Average Age of Players: {avg_age:.2f}")
+print("Players Above Average Age:", ", ".join(above_avg_players))
+
+# 4. Bar chart of player distribution by position
+position_counts = df['Position'].value_counts()
+plt.figure(figsize=(7, 4))
+position_counts.plot(kind='bar', color='seagreen', edgecolor='black')
+plt.title('Distribution of Soccer Players by Position')
+plt.xlabel('Position')
+plt.ylabel('Number of Players')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()

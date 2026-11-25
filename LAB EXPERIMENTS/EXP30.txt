@@ -1,0 +1,51 @@
+# Experiment 30: CART (Decision Tree Regressor) for Car Price Prediction with Decision Path
+import numpy as np
+import pandas as pd
+from sklearn.tree import DecisionTreeRegressor
+
+# Sample dataset: brand (0=Toyota, 1=Honda, 2=BMW), engine_type (0=Petrol, 1=Diesel, 2=Electric)
+data = pd.DataFrame({
+    'mileage': [15000, 45000, 30000, 60000, 10000, 80000, 25000, 50000],
+    'age': [2, 5, 3, 7, 1, 9, 3, 6],
+    'brand': [0, 0, 1, 1, 2, 0, 2, 1],
+    'engine_type': [0, 1, 0, 1, 2, 0, 1, 1],
+    'price': [22000, 14000, 19000, 11000, 45000, 8000, 35000, 13000]
+})
+
+feature_names = ['mileage', 'age', 'brand', 'engine_type']
+X = data[feature_names]
+y = data['price']
+
+# Train CART Regressor
+cart_model = DecisionTreeRegressor(random_state=42)
+cart_model.fit(X, y)
+
+# User input for new car
+mileage = float(input("Enter car mileage (e.g., 28000): "))
+age = float(input("Enter car age in years (e.g., 3): "))
+brand = int(input("Enter brand code (0=Toyota, 1=Honda, 2=BMW): "))
+engine = int(input("Enter engine type code (0=Petrol, 1=Diesel, 2=Electric): "))
+
+new_car = pd.DataFrame([[mileage, age, brand, engine]], columns=feature_names)
+predicted_price = cart_model.predict(new_car)[0]
+
+print(f"
+Predicted Car Price: ${predicted_price:,.2f}")
+
+# Display decision path
+node_indicator = cart_model.decision_path(new_car)
+leaf_id = cart_model.apply(new_car)[0]
+feature = cart_model.tree_.feature
+threshold = cart_model.tree_.threshold
+
+print("
+Decision Path:")
+node_index = node_indicator.indices[node_indicator.indptr[0]:node_indicator.indptr[1]]
+for node_id in node_index:
+    if leaf_id == node_id:
+        print(f"  Leaf Node {node_id} -> Predicted Price: ${predicted_price:,.2f}")
+        continue
+    feat_name = feature_names[feature[node_id]]
+    feat_val = new_car.iloc[0, feature[node_id]]
+    sign = "<=" if feat_val <= threshold[node_id] else ">"
+    print(f"  Node {node_id}: {feat_name} ({feat_val}) {sign} {threshold[node_id]:.2f}")

@@ -1,0 +1,26 @@
+# Experiment 16: Frequency Distribution of Words in Customer Reviews
+import string
+from collections import Counter
+import pandas as pd
+
+# Sample customer reviews dataset
+reviews_df = pd.DataFrame({
+    'review': [
+        "Great product! Really loved the quality and fast delivery.",
+        "Good quality product, worth the price.",
+        "Fast delivery and great customer service.",
+        "The product quality is good, very satisfied!"
+    ]
+})
+
+# Combine all reviews, convert to lowercase, and remove punctuation
+all_text = " ".join(reviews_df['review']).lower()
+all_text = all_text.translate(str.maketrans("", "", string.punctuation))
+
+# Calculate word frequency distribution
+words = all_text.split()
+word_freq = Counter(words)
+
+print("Word Frequency Distribution in Customer Reviews:")
+for word, count in word_freq.most_common():
+    print(f"{word}: {count}")

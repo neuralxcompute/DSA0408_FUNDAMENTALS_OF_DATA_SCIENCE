@@ -1,0 +1,15 @@
+# Experiment 14: Frequency Distribution of Customer Ages (Pandas)
+import pandas as pd
+
+# Sample sales dataset for the past month
+sales_data = pd.DataFrame({
+    'customer_id': [101, 102, 103, 104, 105, 106, 107, 108, 109, 110],
+    'customer_age': [25, 30, 25, 42, 30, 28, 35, 25, 42, 30],
+    'purchase_amount': [120, 85, 210, 45, 150, 95, 300, 60, 175, 110]
+})
+
+# Calculate frequency distribution of customer ages
+age_freq = sales_data['customer_age'].value_counts().sort_index()
+
+print("Frequency Distribution of Customer Ages:")
+print(age_freq)

@@ -1,0 +1,37 @@
+# Experiment 37: Correlation Between Study Time and Exam Scores
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Sample student data
+data = pd.DataFrame({
+    'study_hours': [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0],
+    'exam_score':  [48,  52,  58,  63,  67,  72,  75,  81,  84,  88,  91,  95]
+})
+
+# Calculate Pearson correlation
+correlation = data['study_hours'].corr(data['exam_score'])
+print(f"Pearson Correlation Coefficient: {correlation:.4f}")
+
+# 1. Scatter Plot with Trend Line
+plt.figure(figsize=(8, 4))
+plt.scatter(data['study_hours'], data['exam_score'], color='blue', s=70, label='Students')
+m, b = np.polyfit(data['study_hours'], data['exam_score'], 1)
+plt.plot(data['study_hours'], m * data['study_hours'] + b, color='red', linewidth=2, label='Trend Line')
+plt.title(f'Study Time vs Exam Score (r = {correlation:.2f})')
+plt.xlabel('Study Time (Hours)')
+plt.ylabel('Exam Score')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# 2. Line Plot
+plt.figure(figsize=(8, 4))
+plt.plot(data['study_hours'], data['exam_score'], marker='s', color='green')
+plt.title('Exam Score Progression by Study Time')
+plt.xlabel('Study Time (Hours)')
+plt.ylabel('Exam Score')
+plt.grid(True)
+plt.tight_layout()
+plt.show()

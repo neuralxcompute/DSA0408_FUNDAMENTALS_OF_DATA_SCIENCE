@@ -1,0 +1,42 @@
+# Experiment 34: KNN Classification for Medical Treatment Outcome ("Good" vs "Bad")
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# Sample medical dataset (gender: 0=Female, 1=Male)
+data = pd.DataFrame({
+    'age': [34, 52, 45, 61, 29, 48, 55, 38, 64, 41, 30, 59],
+    'gender': [0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0],
+    'blood_pressure': [120, 145, 130, 160, 118, 138, 150, 125, 165, 128, 115, 155],
+    'cholesterol': [185, 240, 210, 265, 175, 225, 250, 195, 270, 200, 170, 255],
+    'outcome': ['Good', 'Bad', 'Good', 'Bad', 'Good', 'Bad', 'Bad', 'Good', 'Bad', 'Good', 'Good', 'Bad']
+})
+
+X = data[['age', 'gender', 'blood_pressure', 'cholesterol']]
+y = data['outcome']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+
+# Scale features for KNN
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Train KNN Classifier
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train_scaled, y_train)
+y_pred = knn.predict(X_test_scaled)
+
+# Evaluation metrics
+print("Test Set Predictions vs Actual:")
+results = pd.DataFrame({'Actual': y_test.values, 'Predicted': y_pred})
+print(results)
+
+print("
+Model Performance Metrics:")
+print(f"Accuracy:  {accuracy_score(y_test, y_pred):.4f}")
+print(f"Precision: {precision_score(y_test, y_pred, pos_label='Good'):.4f}")
+print(f"Recall:    {recall_score(y_test, y_pred, pos_label='Good'):.4f}")
+print(f"F1-Score:  {f1_score(y_test, y_pred, pos_label='Good'):.4f}")

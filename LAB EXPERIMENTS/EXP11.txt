@@ -1,0 +1,38 @@
+# Experiment 11: Sales Visualization (Line Plot, Scatter Plot, Bar Plot)
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sample monthly sales data
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+sales = [12000, 14500, 13800, 16000, 18500, 21000,
+         20500, 23000, 22400, 25000, 27500, 31000]
+
+# 1. Line Plot of Monthly Sales
+plt.figure(figsize=(9, 4))
+plt.plot(months, sales, marker='o', linestyle='-', color='blue', linewidth=2)
+plt.title('Monthly Sales Over Time (Line Plot)')
+plt.xlabel('Month')
+plt.ylabel('Sales ($)')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# 2. Scatter Plot of Monthly Sales
+plt.figure(figsize=(9, 4))
+plt.scatter(months, sales, color='red', s=80)
+plt.title('Monthly Sales Over Time (Scatter Plot)')
+plt.xlabel('Month')
+plt.ylabel('Sales ($)')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# 3. Bar Plot of Monthly Sales
+plt.figure(figsize=(9, 4))
+plt.bar(months, sales, color='teal', edgecolor='black')
+plt.title('Monthly Sales Data (Bar Plot)')
+plt.xlabel('Month')
+plt.ylabel('Sales ($)')
+plt.tight_layout()
+plt.show()

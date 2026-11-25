@@ -1,0 +1,14 @@
+# Experiment 15: Frequency Distribution of Likes Among Social Media Posts
+import pandas as pd
+
+# Sample user interaction dataset
+interaction_data = pd.DataFrame({
+    'post_id': range(1, 16),
+    'likes': [10, 25, 10, 50, 25, 100, 25, 10, 50, 75, 10, 50, 25, 100, 10]
+})
+
+# Calculate frequency distribution of likes
+likes_freq = interaction_data['likes'].value_counts().sort_index()
+
+print("Frequency Distribution of Likes Among Posts:")
+print(likes_freq)

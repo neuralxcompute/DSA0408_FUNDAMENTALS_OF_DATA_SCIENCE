@@ -1,0 +1,60 @@
+# Experiment 17: Customer Feedback Text Analysis and Top N Words Bar Graph
+import os
+import string
+from collections import Counter
+import pandas as pd
+import matplotlib.pyplot as plt
+
+filename = "data.csv"
+
+# Create sample data.csv if it does not exist
+if not os.path.exists(filename):
+    sample_df = pd.DataFrame({
+        'feedback': [
+            "The service was amazing and the product quality is great!",
+            "Fast delivery, great packaging, and amazing customer support.",
+            "The product is good, but delivery was a bit slow.",
+            "Amazing experience! Will definitely recommend this product.",
+            "Good quality product and helpful customer support team."
+        ]
+    })
+    sample_df.to_csv(filename, index=False)
+
+# Load dataset
+df = pd.read_csv(filename)
+
+# Common English stop words
+stop_words = {
+    'the', 'and', 'is', 'in', 'to', 'of', 'a', 'for', 'on', 'was', 'were',
+    'it', 'this', 'that', 'with', 'as', 'by', 'at', 'be', 'are', 'but', 'will'
+}
+
+# Preprocess text: lowercase, remove punctuation, remove stop words
+all_words = []
+for comment in df['feedback'].dropna():
+    cleaned = str(comment).lower().translate(str.maketrans("", "", string.punctuation))
+    words = [w for w in cleaned.split() if w not in stop_words]
+    all_words.extend(words)
+
+# Calculate frequency distribution
+word_freq = Counter(all_words)
+
+# Get user input for top N words
+n = int(input("Enter the number of top frequent words to display (N): "))
+top_n = word_freq.most_common(n)
+
+print(f"
+Top {n} Most Frequent Words:")
+for word, count in top_n:
+    print(f"{word}: {count}")
+
+# Plot bar graph
+words_list, counts_list = zip(*top_n)
+plt.figure(figsize=(9, 5))
+plt.bar(words_list, counts_list, color='steelblue', edgecolor='black')
+plt.title(f'Top {n} Most Frequent Words in Customer Feedback')
+plt.xlabel('Words')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()

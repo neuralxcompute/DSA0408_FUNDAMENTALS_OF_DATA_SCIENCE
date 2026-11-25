@@ -1,0 +1,31 @@
+# Experiment 27: Logistic Regression for Customer Churn Prediction
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
+# Sample dataset: [monthly_usage_minutes, contract_duration_months, monthly_charges]
+X = np.array([
+    [120, 2, 85],
+    [150, 3, 90],
+    [450, 24, 55],
+    [500, 36, 50],
+    [100, 1, 95],
+    [400, 18, 60],
+    [200, 4, 80],
+    [520, 30, 48]
+])
+# 0 = Not Churned, 1 = Churned
+y = np.array([1, 1, 0, 0, 1, 0, 1, 0])
+
+# Train Logistic Regression model
+model = LogisticRegression()
+model.fit(X, y)
+
+# User input for new customer
+usage = float(input("Enter monthly usage minutes: "))
+contract = float(input("Enter contract duration (months): "))
+charges = float(input("Enter monthly charges ($): "))
+
+prediction = model.predict([[usage, contract, charges]])[0]
+status = "Will Churn (1)" if prediction == 1 else "Will Not Churn (0)"
+print(f"
+Prediction: {status}")

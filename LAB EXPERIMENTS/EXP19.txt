@@ -1,0 +1,22 @@
+# Experiment 19: 95% Confidence Intervals for Clinical Trial (Drug vs Placebo)
+import numpy as np
+from scipy import stats
+
+np.random.seed(42)
+
+# Simulated blood pressure reduction data for 50 patients (25 drug, 25 placebo)
+drug_group = np.random.normal(loc=12.5, scale=3.2, size=25)
+placebo_group = np.random.normal(loc=4.0, scale=2.8, size=25)
+
+def confidence_interval(data, confidence=0.95):
+    n = len(data)
+    mean = np.mean(data)
+    sem = stats.sem(data)  # Standard error of the mean
+    ci = stats.t.interval(confidence, df=n - 1, loc=mean, scale=sem)
+    return mean, ci
+
+drug_mean, drug_ci = confidence_interval(drug_group, 0.95)
+placebo_mean, placebo_ci = confidence_interval(placebo_group, 0.95)
+
+print(f"New Drug Group -> Mean Reduction: {drug_mean:.2f}, 95% CI: ({drug_ci[0]:.2f}, {drug_ci[1]:.2f})")
+print(f"Placebo Group  -> Mean Reduction: {placebo_mean:.2f}, 95% CI: ({placebo_ci[0]:.2f}, {placebo_ci[1]:.2f})")

@@ -1,0 +1,42 @@
+# Experiment 21: Point Estimation & Confidence Interval for Rare Element Concentration
+import os
+import numpy as np
+from scipy import stats
+
+filename = "rare_elements.csv"
+
+# Create sample rare_elements.csv if it does not exist
+if not os.path.exists(filename):
+    np.random.seed(42)
+    sample_measurements = np.random.normal(loc=50.0, scale=5.5, size=200)
+    np.savetxt(filename, sample_measurements, delimiter=",", fmt="%.4f")
+
+# Load concentration data into NumPy array
+data = np.loadtxt(filename, delimiter=",")
+
+# User inputs
+sample_size = int(input(f"Enter sample size (max {len(data)}): "))
+confidence_level = float(input("Enter confidence level (e.g., 0.95 for 95%): "))
+precision = float(input("Enter desired level of precision (margin of error): "))
+
+# Random sampling
+sample = np.random.choice(data, size=sample_size, replace=False)
+
+# Point estimate and confidence interval
+sample_mean = np.mean(sample)
+sample_std = np.std(sample, ddof=1)
+sem = sample_std / np.sqrt(sample_size)
+t_critical = stats.t.ppf((1 + confidence_level) / 2, df=sample_size - 1)
+margin_of_error = t_critical * sem
+ci_lower = sample_mean - margin_of_error
+ci_upper = sample_mean + margin_of_error
+
+# Required sample size to achieve desired precision
+z_critical = stats.norm.ppf((1 + confidence_level) / 2)
+required_n = int(np.ceil((z_critical * sample_std / precision) ** 2))
+
+print(f"
+Point Estimate (Sample Mean): {sample_mean:.4f}")
+print(f"{confidence_level * 100:.1f}% Confidence Interval: ({ci_lower:.4f}, {ci_upper:.4f})")
+print(f"Current Margin of Error: {margin_of_error:.4f}")
+print(f"Required sample size for precision ±{precision}: {required_n}")

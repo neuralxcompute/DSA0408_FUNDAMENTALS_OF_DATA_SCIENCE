@@ -1,0 +1,36 @@
+# Experiment 39: E-Commerce Customer Segmentation (Spending & Items Purchased)
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Sample e-commerce transaction data
+df = pd.DataFrame({
+    'customer_id': range(1, 16),
+    'total_spent': [120, 150, 180, 90, 600, 720, 680, 590, 1800, 2100, 1950, 2250, 130, 650, 2000],
+    'items_purchased': [2, 3, 3, 1, 10, 12, 11, 9, 25, 30, 28, 32, 2, 11, 29]
+})
+
+X = df[['total_spent', 'items_purchased']]
+X_scaled = StandardScaler().fit_transform(X)
+
+# Apply K-Means clustering
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+df['segment'] = kmeans.fit_predict(X_scaled)
+
+print("Customer Segments:")
+print(df)
+
+# Visualize clusters with scatter plot
+plt.figure(figsize=(8, 5))
+for seg in sorted(df['segment'].unique()):
+    subset = df[df['segment'] == seg]
+    plt.scatter(subset['items_purchased'], subset['total_spent'], s=90, label=f'Segment {seg}')
+
+plt.title('E-Commerce Customer Segments (K-Means)')
+plt.xlabel('Number of Items Purchased')
+plt.ylabel('Total Amount Spent ($)')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()

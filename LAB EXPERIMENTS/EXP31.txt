@@ -1,0 +1,37 @@
+# Experiment 31: E-Commerce Customer Segmentation Using K-Means Clustering
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Sample e-commerce customer dataset
+np.random.seed(42)
+customer_data = pd.DataFrame({
+    'age': np.random.randint(18, 65, 50),
+    'annual_spend': np.random.randint(200, 5000, 50),
+    'browsing_hours_per_week': np.random.uniform(1, 20, 50).round(1)
+})
+
+# Standardize features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(customer_data)
+
+# Apply K-Means clustering
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+customer_data['segment'] = kmeans.fit_predict(X_scaled)
+
+print("Customer Segments Summary (Mean Values):")
+print(customer_data.groupby('segment').mean())
+
+# Visualize segments
+plt.figure(figsize=(8, 5))
+plt.scatter(customer_data['browsing_hours_per_week'], customer_data['annual_spend'],
+            c=customer_data['segment'], cmap='viridis', s=70, edgecolor='black')
+plt.title('Customer Segmentation (K-Means Clustering)')
+plt.xlabel('Browsing Hours per Week')
+plt.ylabel('Annual Spend ($)')
+plt.colorbar(label='Segment')
+plt.grid(True)
+plt.tight_layout()
+plt.show()

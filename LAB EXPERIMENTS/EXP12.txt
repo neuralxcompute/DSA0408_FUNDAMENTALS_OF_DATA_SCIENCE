@@ -1,0 +1,27 @@
+# Experiment 12: Monthly Temperature (Line Plot) and Rainfall (Scatter Plot)
+import matplotlib.pyplot as plt
+
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+temperature = [22, 24, 28, 32, 35, 34, 31, 30, 29, 28, 25, 23]  # in Celsius
+rainfall = [15, 10, 12, 25, 45, 120, 180, 165, 140, 95, 50, 20]  # in mm
+
+# 1. Line Plot for Monthly Temperature Data
+plt.figure(figsize=(9, 4))
+plt.plot(months, temperature, marker='o', color='orange', linewidth=2)
+plt.title('Monthly Temperature Data')
+plt.xlabel('Month')
+plt.ylabel('Temperature (°C)')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# 2. Scatter Plot for Monthly Rainfall Data
+plt.figure(figsize=(9, 4))
+plt.scatter(months, rainfall, color='blue', s=80)
+plt.title('Monthly Rainfall Data')
+plt.xlabel('Month')
+plt.ylabel('Rainfall (mm)')
+plt.grid(True)
+plt.tight_layout()
+plt.show()

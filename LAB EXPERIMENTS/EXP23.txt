@@ -1,0 +1,30 @@
+# Experiment 23: Clinical Trial Hypothesis Testing & Visualization
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+np.random.seed(42)
+
+# Control (placebo) and Treatment (new drug) groups
+control_group = np.random.normal(loc=50, scale=8, size=40)
+treatment_group = np.random.normal(loc=57, scale=8, size=40)
+
+# Two-sample t-test
+t_stat, p_value = stats.ttest_ind(treatment_group, control_group)
+
+print(f"Control Mean:   {np.mean(control_group):.2f}")
+print(f"Treatment Mean: {np.mean(treatment_group):.2f}")
+print(f"T-statistic:    {t_stat:.4f}")
+print(f"P-value:        {p_value:.6f}")
+
+# Visualize data and p-value
+plt.figure(figsize=(7, 5))
+plt.boxplot([control_group, treatment_group], labels=['Control (Placebo)', 'Treatment (New Drug)'])
+plt.title(f'Clinical Trial Results (p-value = {p_value:.5f})')
+plt.ylabel('Health Outcome Score')
+plt.grid(axis='y', linestyle='--', alpha=0.6)
+
+significance_text = "Statistically Significant (p < 0.05)" if p_value < 0.05 else "Not Significant (p >= 0.05)"
+plt.figtext(0.5, 0.01, significance_text, ha='center', fontsize=11, color='darkred')
+plt.tight_layout(rect=[0, 0.04, 1, 1])
+plt.show()

@@ -1,0 +1,35 @@
+# Experiment 38: City Temperature Variability Analysis
+import numpy as np
+import pandas as pd
+
+np.random.seed(42)
+
+# Simulated daily temperature readings (°C) over 365 days for 4 cities
+temps = pd.DataFrame({
+    'City_A': np.random.normal(loc=28, scale=2.5, size=365),
+    'City_B': np.random.normal(loc=20, scale=8.0, size=365),
+    'City_C': np.random.normal(loc=15, scale=5.5, size=365),
+    'City_D': np.random.normal(loc=25, scale=1.8, size=365)
+})
+
+# 1. Mean temperature for each city
+mean_temps = temps.mean()
+
+# 2. Standard deviation for each city
+std_temps = temps.std()
+
+# 3. City with the highest temperature range (max - min)
+temp_ranges = temps.max() - temps.min()
+highest_range_city = temp_ranges.idxmax()
+
+# 4. City with the most consistent temperature (lowest standard deviation)
+most_consistent_city = std_temps.idxmin()
+
+print("1. Mean Temperature per City (°C):
+", mean_temps.round(2))
+print("
+2. Standard Deviation per City (°C):
+", std_temps.round(2))
+print(f"
+3. City with Highest Temperature Range: {highest_range_city} ({temp_ranges[highest_range_city]:.2f} °C)")
+print(f"4. Most Consistent City (Lowest Std):   {most_consistent_city} ({std_temps[most_consistent_city]:.2f} °C)")
